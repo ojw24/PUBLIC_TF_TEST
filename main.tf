@@ -16,6 +16,15 @@ resource "aws_s3_bucket" "test_bucket" {
   bucket = "checkov-public-test-bucket-${var.env}"
 }
 
+resource "aws_s3_bucket_public_access_block" "test_bucket_pab" {
+  bucket = aws_s3_bucket.test_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 # 의도적 위반: 0.0.0.0/0 전체 허용 인바운드
 resource "aws_security_group" "test_sg" {
   name        = "checkov-public-test-sg"
